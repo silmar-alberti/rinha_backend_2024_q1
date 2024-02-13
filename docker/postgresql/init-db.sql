@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS "transaction" (
     "client_id" SERIAL NOT NULL,
     "type" character(1) NOT NULL,
     "value" INT NOT NULL,
+    "description" varchar(10) NOT NULL default '',
     "created_date" TIMESTAMP default 'now()',
     CONSTRAINT "fk_transaction_client_id" FOREIGN KEY ("client_id") REFERENCES "client" ("id")
 );

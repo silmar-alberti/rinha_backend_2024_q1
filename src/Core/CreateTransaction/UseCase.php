@@ -1,33 +1,39 @@
 <?php
 
-namespace Core\CreateTransaction;
+namespace App\Core\CreateTransaction;
 
-use Core\CreateTransaction\Dtos\RequestDataDto;
-use Core\CreateTransaction\Dtos\ResponseDataDto;
-use Core\CreateTransaction\Ports\ClientPort;
-use Core\CreateTransaction\Ports\TransactionPort;
-use Core\CreateTransaction\ValueObjects\TransactionTypeVo;
+use App\Core\CreateTransaction\Dtos\RequestDataDto;
+use App\Core\CreateTransaction\Dtos\ResponseDataDto;
+use App\Core\CreateTransaction\Ports\ClientPort;
+use App\Core\CreateTransaction\Ports\DbTransactionPort;
+use App\Core\CreateTransaction\Ports\TransactionPort;
+use App\Core\CreateTransaction\ValueObjects\TransactionTypeVo;
 
 class UseCase
 {
     public function __construct(
         private readonly ClientPort $clientPort,
         private readonly TransactionPort $transactionPort,
+        private readonly DbTransactionPort $dbTransactionPort,
     ) {
     }
 
     public function execute(RequestDataDto $request): ResponseDataDto
     {
+        return $this->dbTransactionPort->wrapTransaction(
+            function () use ($request): ResponseDataDto {
+                
+                $response = match ($request->type) {
+                    TransactionTypeVo::CREDIT => $this->credit(request: $request),
+                    TransactionTypeVo::DEBIT => $this->debit(request: $request),
+                    default => throw new \Exception('invalid transaction type'),
+                };
 
-        $response = match ($request->type) {
-            TransactionTypeVo::CREDIT => $this->credit(request: $request),
-            TransactionTypeVo::DEBIT => $this->debit(request: $request),
-            default => throw new \Exception('invalid transaction type'),
-        };
+                $this->createTransaction(request: $request);
 
-        $this->createTransaction(request: $request);
-
-        return $response;
+                return $response;
+            }
+        );
     }
 
     private function debit(RequestDataDto $request): ResponseDataDto

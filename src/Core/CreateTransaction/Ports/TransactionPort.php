@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\CreateTransaction\Ports;
+namespace App\Core\CreateTransaction\Ports;
 
-use Core\CreateTransaction\Dtos\RequestDataDto;
+use App\Core\CreateTransaction\Dtos\RequestDataDto;
 
 interface TransactionPort
 {

@@ -2,7 +2,7 @@ FROM php:8.3-fpm-alpine as base
 
 WORKDIR /application
 
-ENV TZ=America/Sao_Paulo
+ENV TZ=UTC
 
 RUN apk add --no-cache --virtual postgresql-dev libpq-dev; \
     docker-php-ext-install opcache pdo pdo_pgsql
@@ -19,3 +19,20 @@ RUN apk add --no-cache linux-headers $PHPIZE_DEPS; \
 COPY ./docker/php/opcache-dev.ini /usr/local/etc/php/conf.d/z-opcache.ini
 COPY ./docker/php/xdebug.ini /usr/local/etc/php/conf.d/z-xdebug.ini
 
+
+FROM composer as builder
+
+COPY . /application
+WORKDIR /application
+
+RUN composer install --no-dev --no-scripts --ignore-platform-reqs
+
+FROM base as prod 
+
+WORKDIR /application
+
+COPY  . /application/
+COPY  --from=builder /application/vendor /application/vendor
+
+RUN  mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" ; \
+    /application/bin/console cache:warmup

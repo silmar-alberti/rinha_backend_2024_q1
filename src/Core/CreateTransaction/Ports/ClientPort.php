@@ -1,12 +1,12 @@
 <?php
 
-namespace Core\CreateTransaction\Ports;
+namespace App\Core\CreateTransaction\Ports;
 
-use Core\CreateTransaction\Dtos\ClientDto;
+use App\Core\CreateTransaction\Dtos\ClientDto;
 
 interface ClientPort {
 
     public function getForUpdate(int $clientId): ClientDto;
 
-    public function updateCurrentBalance(int $clientId, $currentBalance): void;
+    public function updateCurrentBalance(int $clientId, int $currentBalance): void;
 }

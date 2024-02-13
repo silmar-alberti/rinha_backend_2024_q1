@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Core\CreateTransaction\Dtos;
+namespace App\Core\GetClientStatement\Dtos;
 
 
 class ClientDto
 {
     public function __construct(
-        public readonly int $id,
         public readonly int $currentBalance,
         public readonly int $credit,
+        public readonly \DateTimeImmutable $queryTime,
     ) {
     }
 }

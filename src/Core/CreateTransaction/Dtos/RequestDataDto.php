@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\CreateTransaction\Dtos;
+namespace App\Core\CreateTransaction\Dtos;
 
-use Core\CreateTransaction\ValueObjects\DescriptionVo;
-use Core\CreateTransaction\ValueObjects\TransactionTypeVo;
+use App\Core\CreateTransaction\ValueObjects\DescriptionVo;
+use App\Core\CreateTransaction\ValueObjects\TransactionTypeVo;
 
 class RequestDataDto
 {

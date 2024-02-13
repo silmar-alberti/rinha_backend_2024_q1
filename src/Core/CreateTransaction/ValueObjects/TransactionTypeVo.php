@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\CreateTransaction\ValueObjects;
+namespace App\Core\CreateTransaction\ValueObjects;
 
 enum TransactionTypeVo: string {
     case CREDIT = 'c';

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\CreateTransaction\Dtos;
+namespace App\Core\CreateTransaction\Dtos;
 
 class ResponseDataDto
 {
