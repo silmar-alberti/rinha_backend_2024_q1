@@ -1,0 +1,65 @@
+version: '3'
+services:
+  php-fpm-1:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      target: prod
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "60MB"
+    restart: unless-stopped
+
+  php-fpm-2:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      target: prod
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "60MB"
+    restart: unless-stopped
+
+  ngnix:
+    image: nginx:stable-alpine3.17
+    deploy:
+      resources:
+        limits:
+          cpus: "0.17"
+          memory: "180MB"
+    volumes:
+      - ./docker/nginx/nginx-test.conf:/etc/nginx/nginx.conf:ro
+      - .:/application
+    depends_on:
+      - php-fpm-1
+      - php-fpm-2
+    ports:
+      - 9999:80
+
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.93"
+          memory: "190MB"
+    environment:
+      # PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_USER: "rinha"
+      POSTGRES_PASSWORD: "rinha-2024"
+      POSTGRES_DB: "rinha"
+    command: 'postgres -c config_file="/etc/postgresql.conf" -c "max_connections=450"'
+    volumes:
+      # - "pgdata:/var/lib/postgresql/data"
+      - ./docker/postgresql/postgres.conf:/etc/postgresql.conf:ro
+      - ./docker/postgresql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+      
+networks:
+  default:
+    driver: bridge
+    name: rinha-nginx-2024q1

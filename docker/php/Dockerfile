@@ -32,6 +32,7 @@ FROM base as prod
 WORKDIR /application
 
 COPY  . /application/
+COPY ./docker/php/php.ini /usr/local/etc/php-fpm.d/php-fpm.ini
 COPY  --from=builder /application/vendor /application/vendor
 
 RUN  mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" ; \

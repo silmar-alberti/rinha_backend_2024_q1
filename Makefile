@@ -15,3 +15,9 @@ up:
 
 down:
 	docker compose down
+
+up-test:
+	docker compose -f ./compose.test.yaml up -d
+	
+down-test:
+	docker compose -f ./compose.test.yaml down

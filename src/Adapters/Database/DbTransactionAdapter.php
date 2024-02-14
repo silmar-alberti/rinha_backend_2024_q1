@@ -15,6 +15,7 @@ class DbTransactionAdapter implements DbTransactionPort
 
     public function wrapTransaction(Closure $fn): mixed
     {
-        return $this->conn->transactional(func: $fn);
+        return $fn();
+        // return $this->conn->transactional(func: $fn);
     }
 }

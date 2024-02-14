@@ -4,6 +4,7 @@ namespace App\Core\CreateTransaction;
 
 use App\Core\CreateTransaction\Dtos\RequestDataDto;
 use App\Core\CreateTransaction\Dtos\ResponseDataDto;
+use App\Core\CreateTransaction\Exceptions\OutOfLimitException;
 use App\Core\CreateTransaction\Ports\ClientPort;
 use App\Core\CreateTransaction\Ports\DbTransactionPort;
 use App\Core\CreateTransaction\Ports\TransactionPort;
@@ -41,6 +42,8 @@ class UseCase
         $client = $this->clientPort->getForUpdate($request->clientId);
         if ($client->currentBalance + $client->credit > $request->value) {
             $currentBalance = $client->currentBalance - $request->value;
+        }else {
+            throw new OutOfLimitException("account limit exceeded");
         }
 
         $this->clientPort->updateCurrentBalance(clientId: $client->id, currentBalance: $currentBalance);
