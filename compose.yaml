@@ -1,27 +1,25 @@
-version: '3'
 services:
-  php-fpm:
+  php:
     build:
       context: .
-      dockerfile: ./docker/php/Dockerfile
-      target: prod
+      dockerfile: docker/php/Dockerfile
+      target: ${TARGET:-dev}
+    image: silmaralberti/rinha-frankenphp:latest
     restart: unless-stopped
-    volumes:
-      - .:/application
-    extra_hosts:
-      - host.docker.internal:host-gateway
-
-  ngnix:
-    image: nginx:stable-alpine3.17
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - .:/application
     ports:
-      - 8000:80
+      # HTTP
+      - target: 80
+        published: ${HTTP_PORT:-80}
+        protocol: tcp
 
   database:
     image: postgres:16-alpine
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.93"
+          memory: "190MB"
     environment:
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_USER: "rinha"
@@ -29,15 +27,8 @@ services:
       POSTGRES_DB: "rinha"
     volumes:
       - "pgdata:/var/lib/postgresql/data"
+      - ./docker/postgresql/postgres.conf:/etc/postgresql.conf:ro
       - ./docker/postgresql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
       
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-
-  
 volumes:
   pgdata:
-    name: rinha-pgdata

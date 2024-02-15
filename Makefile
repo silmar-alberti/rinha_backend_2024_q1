@@ -5,19 +5,22 @@
 setup: build up
 
 build: 
-	docker compose build 
+	docker compose -f ./compose.yaml -f ./compose.override.yaml build 
 
 cli: 
-	docker compose run --rm --entrypoint sh php-fpm 
+	docker compose run --rm --entrypoint sh php
 
 up:
-	docker compose up -d
+	HTTP_PORT=8000  docker compose -f ./compose.yaml -f ./compose.override.yaml up  
 
 down:
-	docker compose down
+	docker compose -f ./compose.yaml -f ./compose.override.yaml down --remove-orphans  -v 
 
 up-test:
-	docker compose -f ./compose.test.yaml up -d
+	HTTP_PORT=9999  docker compose -f ./compose.test.yaml up 
 	
 down-test:
-	docker compose -f ./compose.test.yaml down
+	docker compose -f ./compose.test.yaml down --remove-orphans  -v 
+
+build-prod:
+	TARGET=prod docker compose build

@@ -28,6 +28,7 @@ class ClientDatabaseAdapter implements ClientPort, GetStatementClientPort
                     credit, current_balance
                 FROM client
                 WHERE id = :id
+                FOR UPDATE
                 LIMIT 1
             SQL,
             params: [

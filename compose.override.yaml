@@ -1,0 +1,16 @@
+# # Development environment override
+services:
+  php:
+    volumes:
+      - .:/application
+      - ./docker/Caddy/Caddyfile:/etc/Caddyfile:ro
+      - ./docker/php/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+      - ./vendor:/application/vendor
+    environment:
+      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+      APP_ENV: dev
+      APP_DEBUG: true
+    extra_hosts:
+      # Ensure that host.docker.internal is correctly defined on Linux
+      - host.docker.internal:host-gateway
+    tty: true
