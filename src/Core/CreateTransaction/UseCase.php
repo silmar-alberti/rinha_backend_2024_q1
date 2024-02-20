@@ -23,7 +23,7 @@ class UseCase
     {
         return $this->dbTransactionPort->wrapTransaction(
             function () use ($request): ResponseDataDto {
-                
+
                 $response = match ($request->type) {
                     TransactionTypeVo::CREDIT => $this->credit(request: $request),
                     TransactionTypeVo::DEBIT => $this->debit(request: $request),
@@ -40,8 +40,8 @@ class UseCase
     private function debit(RequestDataDto $request): ResponseDataDto
     {
         $client = $this->clientPort->getForUpdate($request->clientId);
-        if ($client->currentBalance + $client->credit > $request->value) {
-            $currentBalance = $client->currentBalance - $request->value;
+        if ($client->currentBalance + $client->credit > $request->value->value) {
+            $currentBalance = $client->currentBalance - $request->value->value;
         }else {
             throw new OutOfLimitException("account limit exceeded");
         }
@@ -57,7 +57,7 @@ class UseCase
     private function credit(RequestDataDto $request)
     {
         $client = $this->clientPort->getForUpdate(clientId: $request->clientId);
-        $currentBalance  = $client->currentBalance + $request->value;
+        $currentBalance  = $client->currentBalance + $request->value->value;
         $this->clientPort->updateCurrentBalance(clientId: $client->id, currentBalance: $currentBalance);
 
         return new ResponseDataDto(
