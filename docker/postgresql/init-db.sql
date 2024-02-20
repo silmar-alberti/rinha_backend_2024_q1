@@ -1,7 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS "client" (
     "id" SERIAL PRIMARY KEY NOT NULL,
-    "initial_balance" BIGINT NOT NULL,
     "credit" BIGINT NOT NULL,
     "current_balance" BIGINT NOT NULL default 0
 );
@@ -17,10 +16,10 @@ CREATE TABLE IF NOT EXISTS "transaction" (
 );
 
 
-INSERT INTO client (id, initial_balance, credit, current_balance)
+INSERT INTO client (id, credit, current_balance)
 VALUES 
-    (1, 0, 100000, 0),
-    (2, 0, 80000, 0),
-    (3, 0, 1000000, 0),
-    (4, 0, 10000000, 0),
-    (5, 0, 500000, 0);
+    (1, 100000, 0),
+    (2, 80000, 0),
+    (3, 1000000, 0),
+    (4, 10000000, 0),
+    (5, 500000, 0);

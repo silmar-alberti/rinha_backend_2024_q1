@@ -9,7 +9,6 @@ services:
           memory: "150MB"
     restart: unless-stopped
     ports:
-      # HTTP
       - target: 80
         protocol: tcp
 
@@ -40,18 +39,13 @@ services:
           cpus: "0.61"
           memory: "200MB"
     environment:
-      # PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_USER: "rinha"
       POSTGRES_PASSWORD: "rinha-2024"
       POSTGRES_DB: "rinha"
-    command: 'postgres -c config_file="/etc/postgresql.conf" -c "max_connections=450"'
+    command: 'postgres -c config_file="/etc/postgresql.conf"'
     volumes:
-      - "pgdata:/var/lib/postgresql/data"
       - ./docker/postgresql/postgres.conf:/etc/postgresql.conf:ro
       - ./docker/postgresql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
-      
-volumes:
-  pgdata:
       
 networks:
   default:

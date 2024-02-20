@@ -50,7 +50,6 @@ class ClientDatabaseAdapter implements ClientPort, GetStatementClientPort
     public function updateCurrentBalance(int $clientId, int $currentBalance): void
     {
 
-        return;
         $rows = $this->conn->executeStatement(
             sql: <<<SQL
                 UPDATE client

@@ -11,7 +11,7 @@ cli:
 	docker compose run --rm --entrypoint sh php
 
 up:
-	HTTP_PORT=8000  docker compose -f ./compose.yaml -f ./compose.override.yaml up  
+	HTTP_PORT=9999  docker compose -f ./compose.yaml -f ./compose.override.yaml up  
 
 down:
 	docker compose -f ./compose.yaml -f ./compose.override.yaml down --remove-orphans  -v 
@@ -24,3 +24,6 @@ down-test:
 
 build-prod:
 	TARGET=prod docker compose build
+
+push-prod:
+	TARGET=prod docker compose push

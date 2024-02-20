@@ -26,7 +26,7 @@ class TransactionDatabaseAdapter implements TransactionPort, GetStatementTransac
             params: [
                 'clientId' => $request->clientId,
                 'type' => $request->type->value,
-                'value' => $request->value,
+                'value' => $request->value->value,
                 'description' => $request->description->value,
             ]
         );

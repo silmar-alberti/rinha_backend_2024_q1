@@ -9,6 +9,7 @@ use App\Core\CreateTransaction\Dtos\RequestDataDto;
 use App\Core\CreateTransaction\UseCase;
 use App\Core\CreateTransaction\ValueObjects\DescriptionVo;
 use App\Core\CreateTransaction\ValueObjects\TransactionTypeVo;
+use App\Core\CreateTransaction\ValueObjects\ValueVo;
 use App\Core\Dependencies\Exceptions\HttpExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,8 +56,8 @@ class PostClientTransactionController extends AbstractController
 
         return new RequestDataDto(
             clientId: $clientId,
-            type: TransactionTypeVo::from($content['tipo']),
-            value: $content['valor'],
+            type: TransactionTypeVo::create($content['tipo'] ?? ''),
+            value: new ValueVo($content['valor']),
             description: new DescriptionVo($content['descricao'])
         );
     }

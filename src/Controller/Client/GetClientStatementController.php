@@ -36,16 +36,16 @@ class GetClientStatementController extends AbstractController
                     'total' => $response->currentBalance,
                     'data_extrato' => $response->queryTime->format(DATE_RFC3339_EXTENDED),
                     'limite' => $response->credit,
-                    'ultimas_transacoes' => array_map(
-                        callback: fn (TransactionDto $t) => [
-                            'valor' => $t->value,
-                            'tipo' => $t->type,
-                            'descricao' => $t->description,
-                            'realizada_em' => $t->createdAt->format(DATE_RFC3339_EXTENDED),
-                        ],
-                        array: $response->transactions
-                    )
-                ]
+                ],
+                'ultimas_transacoes' => array_map(
+                    callback: fn (TransactionDto $t) => [
+                        'valor' => $t->value,
+                        'tipo' => $t->type,
+                        'descricao' => $t->description,
+                        'realizada_em' => $t->createdAt->format(DATE_RFC3339_EXTENDED),
+                    ],
+                    array: $response->transactions
+                )
             ]);
 
         }catch(HttpExceptionInterface $ex){
