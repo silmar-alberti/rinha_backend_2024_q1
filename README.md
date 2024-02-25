@@ -10,7 +10,7 @@ Projeto [desafio rinha backend q1 2024](https://github.com/zanfranceschi/rinha-d
 - doctrine dbal
 - frankenphp-symfony runtime
 - docker
-- nginx
+- haproxy
 
 # Setup
 
