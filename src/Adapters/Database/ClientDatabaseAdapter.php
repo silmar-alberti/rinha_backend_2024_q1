@@ -73,7 +73,7 @@ class ClientDatabaseAdapter implements ClientPort, GetStatementClientPort
         $clientData = $this->conn->fetchAssociative(
             query: <<<SQL
                 SELECT
-                    credit, current_balance, now() as "query_date"
+                    credit, current_balance
                 FROM client
                 WHERE id = :id
                 LIMIT 1
@@ -90,7 +90,7 @@ class ClientDatabaseAdapter implements ClientPort, GetStatementClientPort
         return new DtosClientDto(
             currentBalance: $clientData['current_balance'],
             credit: $clientData['credit'],
-            queryTime: new DateTimeImmutable($clientData['query_date']),
+            queryTime: new DateTimeImmutable(),
         );
     }
 }
