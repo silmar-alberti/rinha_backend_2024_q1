@@ -12,7 +12,7 @@
 	auto_https off
 }
 
-:80
+:{$LISTEN_PORT:80}
 
 # log
 route {

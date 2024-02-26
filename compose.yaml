@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
       target: ${TARGET:-dev}
-    image: silmaralberti/rinha-frankenphp:latest
+    image: silmaralberti/rinha-frankenphp:${TAG:-latest}
     restart: unless-stopped
     ports:
       # HTTP
